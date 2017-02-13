@@ -15,7 +15,3 @@ class Fingerprint{
         console.log("UP", evt);
     }
 }
-
-module.exports = {
-    Fingerprint : Fingerprint
-};
