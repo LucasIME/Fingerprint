@@ -1,1 +1,2 @@
+-e file:../FingerprintPy#egg=fingerprint
 Flask==0.12
