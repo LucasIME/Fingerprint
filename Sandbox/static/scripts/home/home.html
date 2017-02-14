@@ -2,6 +2,6 @@
 <div>
     <label>{{training_paragraph}}</label>
     <p>Type the training paragraph on the box bellow:</p>
-    <textarea class="form-control" style="min-width: 100%" rows="5"></textarea>
+    <textarea class="form-control" style="min-width: 100%" rows="5" ng-keydown="keystrokes_analyzer.processKeyDownEvent($event)" ng-keyup="keystrokes_analyzer.processKeyUpEvent($event)"></textarea>
     <button ng-click="send_typing_data()">Send!</button>
 </div>

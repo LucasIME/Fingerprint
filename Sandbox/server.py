@@ -11,7 +11,7 @@ def home():
 
 @app.route('/fingerprint', methods=['POST'])
 def fingerprint():
-    keystroke_stream = json.loads(request.data)
+    keystroke_stream = json.loads(request.data.decode())
     return jsonify({
         "fingerprint": identify(keystroke_stream)
     })
