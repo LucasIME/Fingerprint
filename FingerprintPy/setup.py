@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='fingerpint',
+    name='fingerprint',
     version='0.1.0',
     platforms='any',
     description='Identity recognition by keystroke dynamics',
