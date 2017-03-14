@@ -7,11 +7,12 @@ angular.module('app.register', ['ngRoute'])
                                 letters in the alphabet like in the sentence: The quick brown fox jumps \
                                 over the lazy dog";
     $scope.keystrokes_analyzer = new Fingerprint(10000);
+    $scope.email = "";
 
     $scope.send_typing_data = function(){
         $http.post(
-            '/fingerprint',
-            $scope.keystrokes_analyzer.data
+            '/save/' + $scope.email,
+            $scope.keystrokes_analyzer.get()
         );
     };
 });
