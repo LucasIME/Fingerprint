@@ -37,21 +37,21 @@ class RingBuffer{
 
 class Fingerprint{
     constructor(bufferSize){
-        this.data = new RingBuffer(bufferSize);
+        this.buffer = new RingBuffer(bufferSize);
     }
 
     processKeyDownEvent(evt){
-        this.data.push([evt.key, "DOWN", (new Date()).getTime()]);
+        this.buffer.push([evt.key, "DOWN", (new Date()).getTime()]);
         console.log("DOWN", evt);
     }
 
     processKeyUpEvent(evt){
-        this.data.push([evt.key, "UP", (new Date()).getTime()]);
+        this.buffer.push([evt.key, "UP", (new Date()).getTime()]);
         console.log("UP", evt);
     }
 
     get(length){
-        var n = length || this.buffer.len;
+        var n = length || Math.min(this.buffer.len, this.buffer.totalAdded);
         return this.buffer.getLast(n);
     }
 }
