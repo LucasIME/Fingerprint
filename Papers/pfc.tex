@@ -33,17 +33,28 @@ Our big abstract
 \chapter{Introdução}
 
 \section{Contexto e Motivação}
+Sistemas de Segurança da Informação modernos não se baseiam e um único método de autenticação, mas incrementalmente adicionam mecanismos com múltiplos fatores. Quanto mais e melhores fatores, maior a certeza da identidade ser autenticada corretamente.
+
+Dentre as alternativas mais promissoras estão os fatores biométricos, valorizados por sua natureza individual e difícil falsificação. Os fatores biométricos frequentemente mencionados são os fisiológicos, mas seu emprego traz diversos fatores complicantes como a necessidade de amostragem prévia e diminuição da usabilidade do sistema. Uma alternativa é o uso de fatores biométricos de comportamento, como padrões comportamentais expressos naturalmente pelo usuário.
+
+As vantagens dos fatores comportamentais incluem a possibilidade de amostragem silenciosa, maior variabilidade do grau de confiança e a transparência do mecanismo para o usuário. Em particular, sistemas providos pela \textit{Web} em geral possuem uma uniformidade de interface que permite a coleta de vários padrões comportamentais durante todo o uso do sistema.
+
+Alguns exemplos de comportamentos de interesse coletáveis incluem padrões de digitação, cliques de \textit{mouse} ou áreas do sistema e recursos acessadas pelo usuário. A pesquisa sobre como utilizar fatores dessa natureza pode impulsionar sistemas mais seguros e menos impactantes na experiência do usuário.
+
 \section{Objetivos}
+Neste trabalho serão investigados os processos necessários para se utilizar os padrões de digitação como fator de autenticação biométrica comportamental. Tais processos incluem a coleta de dados, extração de informação, algoritmos de decisão e arquiteturas de sistema que tornem possível a implantação deste método.
 
 \begin{itemize}
-\item Investigar a aplicabilidade de medidas de dinâmica da digitação em identificação
-\item Analisar o emprego de identificação em sistemas de autenticação
-\item Experimentar e selecionar modelos de aprendizado de máquina
-\item Produzir
+\item Analisar os tipos de informação que se podem extrair a partir dos padrões de digitação de um indivíduo;
+\item Modelar a combinação das informaçoes extraídas utilizando algoritmos de aprendizado de máquina;
+\item Sistematizar um mecanismo de coleta de amostras que permita o treinamento dos modelos escolhidos;
+\item Definir uma arquitetura de sistema para implantação dos mecanismos de coleta e autenticação definidos;
 \end{itemize}
 
 \section{Contribuições Esperadas}
+
 \section{Método}
+
 \section{Cronograma}
 
 \begin{table}[htb]
@@ -102,16 +113,48 @@ Apresentação &
 \\
 \hline
 \end{tabular}
+
+\caption{Cronograma mensal de trabalho}
 \end{table}
+
 \section{Viabilidade}
+O que eu escrevo aqui?
+
 \section{Organização do Texto}
+No capítulo \ref{fundamentaca} são introduzidos os conceitos necessários para a modelagem conceitual de um sistema de autenticação por dinâmica de digitação. Na seção \ref{relacionados} são discutidos trabalhos relacionados.
+
+No capítulo \ref{solucao} é apresentado uma arquitetura de sistema de autenticação isolado, para fácil implantação do método apresentado. Na seção \ref{modelo} é definido o modelo de autenticação, especificando o fluxo de informações desde a coleta até a decisão de um grau de confiança de identidade, enquanto em \ref{prototipo} é demonstrada uma possível implementação da solução proposta, servindo como prova de conceito para o modelo.
+
+No capítulo \ref{experimentos} são analisados os resultados do experimento proposto com o protótipo criado, analisando o sucesso da solução.
+
+No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e os resultados obtidos pelo sistema apresentado.
 
 \chapter{Fundamentação}
-\chapter{Trabalhos Relacionados}
+\label{fundamentaca}
+
+
+\section{Trabalhos Relacionados}
+\label{relacionados}
+
+
 \chapter{Solução Proposta}
+\label{solucao}
+Aqui entra a arquitetura do sistema, ver com Meireles.\
+
 \section{Modelo conceitual}
+\label{modelo}
+Aqui entra a modelagem do processo de decisão.
+
 \section{Protótipo}
+\label{prototipo}
+Aqui entra o nosso POC, sendo feito no GitHub.
+
 \chapter{Experimentos e Resultados}
+\label{experimentos}
+
 \chapter{Conclusão}
+\label{conclusao}
+
+Excelente trabalho, time!
 
 \end{document}
