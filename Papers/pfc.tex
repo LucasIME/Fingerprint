@@ -55,6 +55,37 @@ Neste trabalho serão investigados os processos necessários para se utilizar os
 
 \section{Método}
 
+\section{Introdução Teórica}
+    O problema que o ramo de aprendizado por maquinas se propõe a resolver se baseia na busca pela aproximação funcional matemática de um problema real, onde $F:C -> R$ é a função alvo desconhecida, então para resolver o problema é suposto uma função $G:H -> R$, onde $G$ é a função estimada que pretende-se aproximar de $F$, $H \subset C$ é o conjunto das amostras que pretende-se expandir para o conjunto real expandido $C$, os valores de $H$ e $R$ são conhecidos; porém, para um problema não interpolável, não há um mapeamento conhecido de $F:C -> R$, seja por falta parâmetros de difícil análise, ou pelo caráter indeterminado do problema, em ambos os casos o tratamento é similar atravéz de estimação e tratamento de erros na abordagem.
+    \newline
+    \newline
+    Para o problema clássico de classificação pode-se usar, no domínio discreto, a seguinte abordagem: seja $f: x->y$ a função alvo onde $x = [x_1,x_2,...,x_d]^t$ é o vetor das amostras de $H$, seja o somatório $\sum\limits_{i=1}^d \omega_i*x_i$, onde $\omega_i$ é o peso do seu respectivo elemento do vetor $x$, de tal forma que:
+    \newline
+    \begin{equation}
+        \sum\limits_{i=1}^d \omega_i*x_i>t; y = 1.
+        \sum\limits_{i=1}^d \omega_i*x_i<t; y = 0.
+    \end{equation}
+    \newline
+    De tal forma os pesos tem suas características definidas por seus respectivos elementos de $x$ da seguinte forma:\newline
+    $|\omega_i|$ é alto quando $x_i$ for importante.\newline
+    $\omega > 0$ quando $x_i$ for benéfico.\newline
+    $\omega < 0$ quando $x_i$ for maléfico.\newline
+    Por fim teremos uma aproximação da função alvo no problema de classificação para $h(x) = sign((\sum\limits_{i=1}^d \omega_i*x_i)+\omega_0)$, onde $\omega_0 = t$.
+    \newline
+    Vale notar que o vetor $x$ apenas representa as amostras colhidas assim embora ele represente o conjunto $C$ como uma aproximação de $C$ para $H$ existe uma divergência conhecida como erro dentro da amostra $E_in$ essa diferença é representada pela diferença entre $x$ e sua projeção em $C$, há também o erro referente aos valores extrapolados pela função $G: H -> R$ como esse erro não se refere à amostra colhida ele é conhecido como erro fora da amostra $E_out$.
+    \newline
+    Uma ferramenta de verificação de erros que é utilizada afim de reduzi-los é desigualdade de Hoeffding Chernoff como meio de verificação sobre os erros dentro e fora da amostra, a desigualdade em questão pode ser expressa da seguinte forma:
+    \newline
+    $P[|\upsilon - \mu|>\epsilon] \leq 2*e^{-2*\epsilon^2*N}$, para $\epsilon>0$
+    \newline
+    $P[|\upsilon - \mu|\leq\epsilon] > 2*e^{-2*\epsilon^2*N}$, para $\epsilon>0$
+    \newline
+    A fim de refinar os valores e diminuir o erro escolhe-se o valor de $\epsilon$ de tal forma que $\upsilon + \epsilon \geq \mu \geq \upsilon - \epsilon$, nota-se que a fronteira denotada por $2*e^{-2*\epsilon^2*N}$ não depende de $\mu$, nem do tamanho do domínio.
+    \newline
+    Para o problema de classificação a desigualdade pode ser aplicada tomando $|E_in-E_out|=|\upsilon-\mu|$ assim tem-se as equações 
+    $P[|E_in-E_out|>\epsilon] \leq 2*|H|*e^{-2*\epsilon^2*N}$, ou 
+    $P[|E_in-E_out|\leq\epsilon] > 2*|H|*e^{-2*\epsilon^2*N}$, para $\epsilon>0$.
+
 \section{Cronograma}
 
 \begin{table}[htb]
