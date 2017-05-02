@@ -133,9 +133,9 @@ No capítulo \ref{experimentos} são analisados os resultados do experimento pro
 No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e os resultados obtidos pelo sistema apresentado.
 
 \chapter{Fundamentação}
-\section{Problema de Classificação}
    O problema que o ramo de aprendizado por máquinas se propõe a resolver é a busca pela aproximação funcional matemática de um problema real em um conjunto matemático, onde $F:C -> R$ é a função alvo desconhecida, então para resolver o problema é suposto uma função $G:H -> R$, onde $G$ é a função estimada que pretende-se aproximar de $F$, $H \subset C$ é o conjunto das amostras que pretende-se expandir para o conjunto real expandido $C$, os valores de $H$ e $R$ são conhecidos; porém, para um problema não interpolável, não há um mapeamento conhecido de $F:C -> R$, seja por falta parâmetros de difícil análise, ou pelo caráter indeterminado do problema, em ambos os casos o tratamento é similar atravéz de estimação e tratamento de erros na abordagem.
     \newline
+\section{Problema de Classificação}
     \newline
     O problema de traduzir um conjunto amostral $H$ em conjuntos distintos com uma abordagem não interpolável é conhecido como o problema classificação, para tal pode se usar, no domínio discreto, a seguinte abordagem. Seja $f: x->y$ a função alvo onde $x = [x_1,x_2,...,x_d]^t$ é o vetor das amostras de $H$, seja o somatório $\sum\limits_{i=1}^d \omega_i*x_i$, onde $\omega_i$ é o peso do seu respectivo elemento do vetor $x$, de tal forma que:
     \newline
@@ -152,6 +152,8 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
     \newline
     Neste caso o problema de classificação se restringirá a apenas dois conjuntos alvo em $R$, para uma generalização com múltiplos conjuntos usam-se estratégias de modo a recair no problema com dois conjuntos alvo.
     \newline
+\section{Erro de amostragem}
+   \newline
     Vale notar que o vetor $x$ apenas representa as amostras colhidas, assim embora ele represente o conjunto $C$ como uma aproximação de $C$ para $H$ existe uma divergência conhecida como erro dentro da amostra $E_in$ essa diferença é representada pela diferença entre $x$ e sua projeção em $C$, assim como a extrapolação da função nem sempre vai atender o comportamento esperado pela função estimada $G: H \rightarrow R$ assim a divergência entre o real e o esperado é o chamado fora da amostra $E_out$, o qual funciona como um meio de verificar o quão errada esta a estimação de $G: H \rightarrow R$.
     \newline
     Em um problema de aprendizado a verificação de erros não é um problema trivial, uma vez que pela impossibilidade de se conferir ambos os erros, $E_{in}$ e $E_{out}$, de maneira direta, por não conhecermos a função alvo, usam-se ferramentas que possibilitam verificar tais erros e assim modificar de maneira eficiente o método de estimação da função, uma primeira ferramenta usada para verificação de erros é a desigualdade de Hoeffding Chernoff como meio de verificação sobre os erros dentro e fora da amostra, a desigualdade em questão pode ser expressa da seguinte forma:
@@ -167,6 +169,11 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
     $P[|E_{in}-E_{out}|\leq\epsilon] > 2*|H|*e^{-2*\epsilon^2*N}$, para $\epsilon>0$.
     \newline
     Como o erro $E_in$ é uma medida que advem da diferença entre a projeção da função estimada pode há uma identidade para tal, na qual o $E_in$ é a média das distâncias entre o valor real e o estimado, os seja $E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),f(x_i))}{N}$, ou $E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N}$, quando a função alvo é indeterminada, dessa forma como o $E_{in}$ é independente de $E_{out}$ além de ser identicamente distribuída a tal pode-se afirmar que o valor de $E_{out}$ converge para $E_{out} = E(E_{in}) = E(\frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N})$, leia $E(x)$ como a esperança de $x$, logo o erro de classificação é representado como $P[g(x) \neq y] = E(L(g(x),y))$ de tal forma para minimizar de maneira mais eficiente se estipula parametros afim de diminuir o erro quadrático médio assim buscam-se os parâmetros, tais que $(x, y) \rightarrow inf E((y-g(x))^2)$, leia-se $inf$ como infimo.
+    \newline
+    Afim de otimizar a estimação busca-se então um classificador ótimo ao problema tal que o $E_{out}$ seja mínimo sem para isso alterar a amostra, de tal forma $E_{out}^{*} = inf( E_{out}(h))$, $h \in H$ nesse caso o erro fora da amostra é minimizado quando ele se aproxima do erro para um classificador ótimo $inf(E_{out}-E_{out}^{*})$, seja $\overline{h} \in H$, tal que $\overline{h}$ é a amostra ideal, nesse caso $E_{out}-E_{out}^{*} = (E_{out} - E_{out}(\overline{h})) + (E_{out}(\overline{h}) - E_{out}^{*})$, onde $E_{out} - E_{out}(\overline{h})$ é o erro na estimação da amostra e $E_{out}(\overline{h}) - E_{out}^{*}$ o erro na aproximação da amostra, assim minimizar o erro de estimação implica em aumentar o erro de aproximação, bem como assim minimizar o erro de aproximação implica em aumentar o erro de estimação, no entanto o erro de estimação esta diretamente ligado ao $E_{in}$, portanto minimizar o $E_{in}$ e consequentemente o $E_{out}$ implicam em aumento do erro de aproximação, logo existe um risco associado quando se tenta adaptar a função estimada ao comportamento real, o que pode levar ao problema de overfitting.
+    \newline
+    \section{Dimensão de Vapnik-Charvanenks ($D_{vc}$)}
+    \newline
 \label{fundamentaca}
 
 
