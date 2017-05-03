@@ -156,24 +156,62 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
    \newline
     Vale notar que o vetor $x$ apenas representa as amostras colhidas, assim embora ele represente o conjunto $C$ como uma aproximação de $C$ para $H$ existe uma divergência conhecida como erro dentro da amostra $E_in$ essa diferença é representada pela diferença entre $x$ e sua projeção em $C$, assim como a extrapolação da função nem sempre vai atender o comportamento esperado pela função estimada $G: H \rightarrow R$ assim a divergência entre o real e o esperado é o chamado fora da amostra $E_out$, o qual funciona como um meio de verificar o quão errada esta a estimação de $G: H \rightarrow R$.
     \newline
+    \newline
     Em um problema de aprendizado a verificação de erros não é um problema trivial, uma vez que pela impossibilidade de se conferir ambos os erros, $E_{in}$ e $E_{out}$, de maneira direta, por não conhecermos a função alvo, usam-se ferramentas que possibilitam verificar tais erros e assim modificar de maneira eficiente o método de estimação da função, uma primeira ferramenta usada para verificação de erros é a desigualdade de Hoeffding Chernoff como meio de verificação sobre os erros dentro e fora da amostra, a desigualdade em questão pode ser expressa da seguinte forma:
     \newline
-    $P[|\upsilon - \mu|>\epsilon] \leq 2*e^{-2*\epsilon^2*N}$, para $\epsilon>0$
-    \newline
-    $P[|\upsilon - \mu|\leq\epsilon] > 2*e^{-2*\epsilon^2*N}$, para $\epsilon>0$
+    \begin{equation}
+        \begin{split}
+            & P[|\upsilon - \mu|>\epsilon] \leq 2*e^{-2*\epsilon^2*N}, \epsilon>0 \\
+            & P[|\upsilon - \mu|\leq\epsilon] > 2*e^{-2*\epsilon^2*N}, \epsilon>0
+    \end{split}
+    \end{equation}
     \newline
     A fim de melhor adaptar os valores, leia-se $P[x]$ como probabilidade de $x$, e diminuir os erros escolhe-se o valor de $\epsilon$ de tal forma que $\upsilon + \epsilon \geq \mu \geq \upsilon - \epsilon$, nota-se que a fronteira denotada por $2*e^{-2*\epsilon^2*N}$ não depende de $\mu$, nem do tamanho do domínio.
     \newline
-    Adaptando-se a desigualdade ao problema de classificação ela é reescrita de forma que $|E_{in}-E_{out}|=|\upsilon-\mu|$ assim tem-se
-    $P[|E_{in}-E_{out}|>\epsilon] \leq 2*|H|*e^{-2*\epsilon^2*N}$, ou 
-    $P[|E_{in}-E_{out}|\leq\epsilon] > 2*|H|*e^{-2*\epsilon^2*N}$, para $\epsilon>0$.
+    Adaptando-se a desigualdade ao problema de classificação ela é reescrita de forma que $|E_{in}-E_{out}|=|\upsilon-\mu|$ assim tem-se:
+    \begin{equation}
+        \begin{split}
+             & P[|E_{in}-E_{out}|>\epsilon] \leq 2*|H|*e^{-2*\epsilon^2*N} \\ & P[|E_{in}-E_{out}|\leq\epsilon] > 2*|H|*e^{-2*\epsilon^2*N}, \epsilon>0
+        \end{split}
+    \end{equation}
     \newline
-    Como o erro $E_in$ é uma medida que advem da diferença entre a projeção da função estimada pode há uma identidade para tal, na qual o $E_in$ é a média das distâncias entre o valor real e o estimado, os seja $E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),f(x_i))}{N}$, ou $E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N}$, quando a função alvo é indeterminada, dessa forma como o $E_{in}$ é independente de $E_{out}$ além de ser identicamente distribuída a tal pode-se afirmar que o valor de $E_{out}$ converge para $E_{out} = E(E_{in}) = E(\frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N})$, leia $E(x)$ como a esperança de $x$, logo o erro de classificação é representado como $P[g(x) \neq y] = E(L(g(x),y))$ de tal forma para minimizar de maneira mais eficiente se estipula parametros afim de diminuir o erro quadrático médio assim buscam-se os parâmetros, tais que $(x, y) \rightarrow inf E((y-g(x))^2)$, leia-se $inf$ como infimo.
+    Como o erro $E_in$ é uma medida que advem da diferença entre a projeção da função estimada pode há uma identidade para tal, na qual o $E_in$ é a média das distâncias entre o valor real e o estimado, os seja:
+    \begin{equation}
+        \begin{split}
+            & E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),f(x_i))}{N} \\
+            & E_{in} = \frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N}
+        \end{split}
+    \end{equation}
+    Quando a função alvo é indeterminada, dessa forma como o $E_{in}$ é independente de $E_{out}$ além de ser identicamente distribuída a tal pode-se afirmar que o valor de $E_{out}$ converge para $E_{out} = E(E_{in}) = E(\frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N})$, leia $E(x)$ como a esperança de $x$, logo o erro de classificação é representado como $P[g(x) \neq y] = E(L(g(x),y))$ de tal forma para minimizar de maneira mais eficiente se estipula parametros afim de diminuir o erro quadrático médio assim buscam-se os parâmetros, tais que $(x, y) \rightarrow inf E((y-g(x))^2)$, leia-se $inf$ como infimo.
     \newline
-    Afim de otimizar a estimação busca-se então um classificador ótimo ao problema tal que o $E_{out}$ seja mínimo sem para isso alterar a amostra, de tal forma $E_{out}^{*} = inf( E_{out}(h))$, $h \in H$ nesse caso o erro fora da amostra é minimizado quando ele se aproxima do erro para um classificador ótimo $inf(E_{out}-E_{out}^{*})$, seja $\overline{h} \in H$, tal que $\overline{h}$ é a amostra ideal, nesse caso $E_{out}-E_{out}^{*} = (E_{out} - E_{out}(\overline{h})) + (E_{out}(\overline{h}) - E_{out}^{*})$, onde $E_{out} - E_{out}(\overline{h})$ é o erro na estimação da amostra e $E_{out}(\overline{h}) - E_{out}^{*}$ o erro na aproximação da amostra, assim minimizar o erro de estimação implica em aumentar o erro de aproximação, bem como assim minimizar o erro de aproximação implica em aumentar o erro de estimação, no entanto o erro de estimação esta diretamente ligado ao $E_{in}$, portanto minimizar o $E_{in}$ e consequentemente o $E_{out}$ implicam em aumento do erro de aproximação, logo existe um risco associado quando se tenta adaptar a função estimada ao comportamento real, o que pode levar ao problema de overfitting.
+    Afim de otimizar a estimação busca-se então um classificador ótimo ao problema tal que o $E_{out}$ seja mínimo sem para isso alterar a amostra, de tal forma $E_{out}^{*} = inf( E_{out}(h))$, $h \in H$ nesse caso o erro fora da amostra é minimizado quando ele se aproxima do erro para um classificador ótimo $inf(E_{out}-E_{out}^{*})$, seja $\overline{h} \in H$, tal que $\overline{h}$ é a amostra ideal, nesse caso $E_{out}-E_{out}^{*} = (E_{out} - E_{out}(\overline{h})) + (E_{out}(\overline{h}) - E_{out}^{*})$, onde $E_{out} - E_{out}(\overline{h})$ é o erro na estimação da amostra e $E_{out}(\overline{h}) - E_{out}^{*}$ o erro na aproximação da amostra, assim minimizar o erro de estimação implica em aumentar o erro de aproximação, bem como assim minimizar o erro de aproximação implica em aumentar o erro de estimação, no entanto o erro de estimação esta diretamente ligado ao $E_{in}$, portanto minimizar o $E_{in}$ e consequentemente o $E_{out}$ implicam em aumento do erro de aproximação, logo existe um risco associado quando se tenta adaptar a função estimada ao comportamento real, o que pode levar ao problema de overfitting, para impedi-lo avalia-se então o risco associado a relação entre os erros conforme aa seguinte forma:
+    \begin{equation}
+        E_{out} - E_{out}^{*} \leq E_{out} - E_{in} - E_{out}^{*} + E_{in}^{*} \leq Sup(|E_{out}-E_{in}|)
+    \end{equation}
+    \newline
+    Assim usando-se da desigualdade $(3)$ para isolar o valor de $\epsilon$, tem-se que o valor de $Sup(|E_{out}-E_{in}|)$ substituindo o valor $\epsilon$ na equação resultante chega-se a:
+    \begin{equation}
+        Sup(|E_{out}-E_{in}|) \leq \alpha \sqrt{\frac{log(|H|)}{N\delta}}
+    \end{equation}   
+    \newline
+    Dessa forma é possível limitar a variação máxima entre os dois erros afim de minimizar o risco associado ao overfitting, para usar essa relação de maneira formal no ambito do problema ainda é preciso analisar as caraterísticas do conjunto $H$, de onde são colhidas as amostras para teste e treino, para tal busca-se a divisão em subconjuntos de maneira que estes sejam disjuntos e $H$ é então separado como um conjunto, tal que $H(s) = \{ h(x_1), h(x_2), ..., h(x_N) \}$, com $s \in X^N$, assim o crescimento de $H$ será delimitado por $2^N$ e consequentemente o seu número de dicotomias ($m_h(H)$), que são as formas de separar $H$ em duas partes, será a forma de se avaliar o crescimento de $H$ afim de reduzir os riscos ao selecionar a abordagem e tratar os erros do problema de classificação.
     \newline
     \section{Dimensão de Vapnik-Charvanenks ($D_{vc}$)}
     \newline
+    Ainda assim é necessária uma ferramenta que defina qual o maior subconjunto de $H$, o qual possa ser separado dicotomicamente em $H$, pois a análise anterior foi feita integralmente com base no supremo da diferença entre os erros em $H$ para tal foi criada a dimensão de Vapnik-Charvanenks, assim:
+    \begin{equation}
+        \begin{split}
+            & d_{vc}(H) = max\{N:m_H\} \\
+            & d_{vc}(H) = \infty, se (m_h(N)=2^N, \forall N)
+        \end{split}
+    \end{equation}
+    \newline
+    a dimensão VC em sí é uma ferramente de difícil estimação, para facilitar a sua utilização em vista da minimização de risco  é utilizado o Lema de Sauer, tomando $d_{vc}=d$, implicando em:
+    \begin{equation}
+        m_h(N) \leq \sum_{i=0}^d {\left(\begin{split} & N \\ & i\end{split}\right)} = \phi_d(N) \leq \left( \frac{eN}{d} \right)^d
+    \end{equation}
+    Ainda assim o ajuste ainda estará sujeito a erros de generalização quando a tese escolhida $G: H \rightarrow C$, quando for colocado em prática, tal erro é exposto como erro de generalização denotado como $arg Min E_{in}(h) = arg_{h \in H} \frac{1}{N}\sum L(h(x),y) $, leia $Min$ como mínimo, a fim de minimizar esses erros bem como seus riscos tornam-se necessárias táticas de verificação e validação da tese.
+    
 \label{fundamentaca}
 
 
