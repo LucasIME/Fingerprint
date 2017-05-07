@@ -211,6 +211,16 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
         m_h(N) \leq \sum_{i=0}^d {\left(\begin{split} & N \\ & i\end{split}\right)} = \phi_d(N) \leq \left( \frac{eN}{d} \right)^d
     \end{equation}
     Ainda assim o ajuste ainda estará sujeito a erros de generalização quando a tese escolhida $G: H \rightarrow C$, quando for colocado em prática, tal erro é exposto como erro de generalização denotado como $arg Min E_{in}(h) = arg_{h \in H} \frac{1}{N}\sum L(h(x),y) $, leia $Min$ como mínimo, a fim de minimizar esses erros bem como seus riscos tornam-se necessárias táticas de verificação e validação da tese.
+    \newline
+    \section{Validação}
+    \newline
+    A validação é uma técnica que visa tornar a tática escolhida em otimal, assim sendo a validação é principalmente um meio de garantir que a abordagem escolhida para o problema esteja tão próxima da realidade quanto for possível, neste caso o conjunto de amostras é tratado para aprimorar a aplicação da tática, o tratamento pode funcionar de maneiras de ferentes de uma tática para outra, por fim a tática de validação mais utilizada e precisa quanto a validar o modelo é a validação cruzada, a qual apesar da eficiência e precisão pode não ser utilizada em detrimento de outras táticas por ser muito custosa em termos computacionais.
+    \newline
+    A validação cruzada se baseia em redistribuir a amostra de teste em diversas sub-amostras de treino para então escolher-se recursivamente tais conjuntos de amostras e usar o restante como amostra de treino esta abordagem visa estimar o valor do $E_{out}$ que não pode ser calculado sem treino ou verificação do modelo já em uso, então calculam-se os erros para assim se escolher como amostra de teste a amostra, a qual contenha os melhores índices de erro; porém, como visto previamente, forçar os valores de erro na amostra e fora dela para minimiza-los pode acarretar em problemas de overfitting e neste caso os erros calculados durante a validação iriam distuar drasticamente do seu valor real.
+    \newline
+    Outra técnica de validação amplamente utilizada é a reamostragem, nesse caso o modelo escolhido, mesmo após processos de verificação, não atende as espectativas quando implementado e por isso necessita-se refazer o treinamento, assim sendo se colhem novas amostras para refazer o processo de treino, é importante que não se usem as amostras já colhidas, pois estas iriam moldar o novo modelo com certo juízo de valor, contribuindo fatalmente para o problema de overfitting.
+    \newline
+    Outra forma de validar um modelo é pela verificação continua durante o treino, neste caso a cada iteração do treinamento calculam-se os erros  do modelo em relação ao esperado para assim melhorar o modelo com alterações pontuais, similar ao processo de entraga de um produto em que a cada versão busca-se melhora-lo e consertar os problemas descobertos, assim como a tática de validação cruzada esse método é muito custoso computacionalmente e por isso pode ser desestimulado em relação aos outros.
     
 \label{fundamentaca}
 
