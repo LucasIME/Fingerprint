@@ -27,7 +27,7 @@ Our big abstract
 \vehicularKeywords{our keywords}
 
 %% Referências
-\references{bibliografia}
+%%\references{bibliografia}
 
 \begin{document}
 
@@ -134,31 +134,30 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
 
 \chapter{Fundamentação}
    O problema que o ramo de aprendizado por máquinas se propõe a resolver é a busca pela aproximação funcional matemática de um problema real em um conjunto matemático, onde $F:C \rightarrow R$ é a função alvo desconhecida, então para resolver o problema é suposto uma função $G:H \rightarrow R$, onde $G$ é a função estimada que pretende-se aproximar de $F$, $H \subset C$ é o conjunto das amostras que pretende-se expandir para o conjunto real expandido $C$, os valores de $H$ e $R$ são conhecidos; porém, para um problema não interpolável, não há um mapeamento conhecido de $F:C \rightarrow R$, seja por falta parâmetros de difícil análise, ou pelo caráter indeterminado do problema, em ambos os casos o tratamento é similar atravéz de estimação e tratamento de erros na abordagem.
-    \newline
+
 \section{Problema de Classificação}
-    \newline
+
     O problema de traduzir um conjunto amostral $H$ em conjuntos distintos com uma abordagem não interpolável é conhecido como o problema classificação, para tal pode se usar, no domínio discreto, a seguinte abordagem. Seja $f: x->y$ a função alvo onde $x = [x_1,x_2,...,x_d]^t$ é o vetor das amostras de $H$, seja o somatório $\sum\limits_{i=1}^d \omega_i*x_i$, onde $\omega_i$ é o peso do seu respectivo elemento do vetor $x$, de tal forma que:
-    \newline
+
     \begin{equation}
         \sum\limits_{i=1}^d \omega_i*x_i>t; y = 1.
         \sum\limits_{i=1}^d \omega_i*x_i<t; y = 0.
     \end{equation}
-    \newline
+
     De tal forma os pesos tem suas características definidas por seus respectivos elementos de $x$ da seguinte forma:\newline
     $|\omega_i|$ é alto quando $x_i$ for importante.\newline
     $\omega > 0$ quando $x_i$ for benéfico.\newline
     $\omega < 0$ quando $x_i$ for maléfico.\newline
     Por fim teremos uma aproximação da função alvo no problema de classificação para $h(x) = sign((\sum\limits_{i=1}^d \omega_i*x_i)+\omega_0)$, onde $\omega_0 = t$.
-    \newline
+
     Neste caso o problema de classificação se restringirá a apenas dois conjuntos alvo em $R$, para uma generalização com múltiplos conjuntos usam-se estratégias de modo a recair no problema com dois conjuntos alvo.
-    \newline
+
 \section{Erro de amostragem}
-   \newline
+
     Vale notar que o vetor $x$ apenas representa as amostras colhidas, assim embora ele represente o conjunto $C$ como uma aproximação de $C$ para $H$ existe uma divergência conhecida como erro dentro da amostra $E_in$ essa diferença é representada pela diferença entre $x$ e sua projeção em $C$, assim como a extrapolação da função nem sempre vai atender o comportamento esperado pela função estimada $G: H \rightarrow R$ assim a divergência entre o real e o esperado é o chamado fora da amostra $E_out$, o qual funciona como um meio de verificar o quão errada esta a estimação de $G: H \rightarrow R$.
-    \newline
-    \newline
+
     Em um problema de aprendizado a verificação de erros não é um problema trivial, uma vez que pela impossibilidade de se conferir ambos os erros, $E_{in}$ e $E_{out}$, de maneira direta, por não conhecermos a função alvo, usam-se ferramentas que possibilitam verificar tais erros e assim modificar de maneira eficiente o método de estimação da função, uma primeira ferramenta usada para verificação de erros é a desigualdade de Hoeffding Chernoff como meio de verificação sobre os erros dentro e fora da amostra, a desigualdade em questão pode ser expressa da seguinte forma:
-    \newline
+
     \begin{equation}
         \begin{split}
             & P[|\upsilon - \mu|>\epsilon] \leq 2*e^{-2*\epsilon^2*N}, \epsilon>0 \\
@@ -174,7 +173,7 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
              & P[|E_{in}-E_{out}|>\epsilon] \leq 2*|H|*e^{-2*\epsilon^2*N} \\ & P[|E_{in}-E_{out}|\leq\epsilon] > 2*|H|*e^{-2*\epsilon^2*N}, \epsilon>0
         \end{split}
     \end{equation}
-    \newline
+
     Como o erro $E_in$ é uma medida que advem da diferença entre a projeção da função estimada pode há uma identidade para tal, na qual o $E_in$ é a média das distâncias entre o valor real e o estimado, os seja:
     \begin{equation}
         \begin{split}
@@ -183,21 +182,21 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
         \end{split}
     \end{equation}
     Quando a função alvo é indeterminada, dessa forma como o $E_{in}$ é independente de $E_{out}$ além de ser identicamente distribuída a tal pode-se afirmar que o valor de $E_{out}$ converge para $E_{out} = E(E_{in}) = E(\frac{\sum\limits_{i=0}^N L(g(x_i),y_i)}{N})$, leia $E(x)$ como a esperança de $x$, logo o erro de classificação é representado como $P[g(x) \neq y] = E(L(g(x),y))$ de tal forma para minimizar de maneira mais eficiente se estipula parametros afim de diminuir o erro quadrático médio assim buscam-se os parâmetros, tais que $(x, y) \rightarrow inf E((y-g(x))^2)$, leia-se $inf$ como infimo.
-    \newline
+
     Afim de otimizar a estimação busca-se então um classificador ótimo ao problema tal que o $E_{out}$ seja mínimo sem para isso alterar a amostra, de tal forma $E_{out}^{*} = inf( E_{out}(h))$, $h \in H$ nesse caso o erro fora da amostra é minimizado quando ele se aproxima do erro para um classificador ótimo $inf(E_{out}-E_{out}^{*})$, seja $\overline{h} \in H$, tal que $\overline{h}$ é a amostra ideal, nesse caso $E_{out}-E_{out}^{*} = (E_{out} - E_{out}(\overline{h})) + (E_{out}(\overline{h}) - E_{out}^{*})$, onde $E_{out} - E_{out}(\overline{h})$ é o erro na estimação da amostra e $E_{out}(\overline{h}) - E_{out}^{*}$ o erro na aproximação da amostra, assim minimizar o erro de estimação implica em aumentar o erro de aproximação, bem como assim minimizar o erro de aproximação implica em aumentar o erro de estimação, no entanto o erro de estimação esta diretamente ligado ao $E_{in}$, portanto minimizar o $E_{in}$ e consequentemente o $E_{out}$ implicam em aumento do erro de aproximação, logo existe um risco associado quando se tenta adaptar a função estimada ao comportamento real, o que pode levar ao problema de overfitting, para impedi-lo avalia-se então o risco associado a relação entre os erros conforme aa seguinte forma:
     \begin{equation}
         E_{out} - E_{out}^{*} \leq E_{out} - E_{in} - E_{out}^{*} + E_{in}^{*} \leq Sup(|E_{out}-E_{in}|)
     \end{equation}
-    \newline
+
     Assim usando-se da desigualdade $(3)$ para isolar o valor de $\epsilon$, tem-se que o valor de $Sup(|E_{out}-E_{in}|)$ substituindo o valor $\epsilon$ na equação resultante chega-se a:
     \begin{equation}
         Sup(|E_{out}-E_{in}|) \leq \alpha \sqrt{\frac{log(|H|)}{N\delta}}
     \end{equation}   
-    \newline
+
     Dessa forma é possível limitar a variação máxima entre os dois erros afim de minimizar o risco associado ao overfitting, para usar essa relação de maneira formal no ambito do problema ainda é preciso analisar as caraterísticas do conjunto $H$, de onde são colhidas as amostras para teste e treino, para tal busca-se a divisão em subconjuntos de maneira que estes sejam disjuntos e $H$ é então separado como um conjunto, tal que $H(s) = \{ h(x_1), h(x_2), ..., h(x_N) \}$, com $s \in X^N$, assim o crescimento de $H$ será delimitado por $2^N$ e consequentemente o seu número de dicotomias ($m_h(H)$), que são as formas de separar $H$ em duas partes, será a forma de se avaliar o crescimento de $H$ afim de reduzir os riscos ao selecionar a abordagem e tratar os erros do problema de classificação.
-    \newline
+
     \section{Dimensão de Vapnik-Charvanenks ($D_{vc}$)}
-    \newline
+
     Ainda assim é necessária uma ferramenta que defina qual o maior subconjunto de $H$, o qual possa ser separado dicotomicamente em $H$, pois a análise anterior foi feita integralmente com base no supremo da diferença entre os erros em $H$ para tal foi criada a dimensão de Vapnik-Charvanenks, assim:
     \begin{equation}
         \begin{split}
@@ -205,21 +204,21 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
             & d_{vc}(H) = \infty, se (m_h(N)=2^N, \forall N)
         \end{split}
     \end{equation}
-    \newline
+
     a dimensão VC em sí é uma ferramente de difícil estimação, para facilitar a sua utilização em vista da minimização de risco  é utilizado o Lema de Sauer, tomando $d_{vc}=d$, implicando em:
     \begin{equation}
         m_h(N) \leq \sum_{i=0}^d {\left(\begin{split} & N \\ & i\end{split}\right)} = \phi_d(N) \leq \left( \frac{eN}{d} \right)^d
     \end{equation}
     Ainda assim o ajuste ainda estará sujeito a erros de generalização quando a tese escolhida $G: H \rightarrow C$, quando for colocado em prática, tal erro é exposto como erro de generalização denotado como $arg Min E_{in}(h) = arg_{h \in H} \frac{1}{N}\sum L(h(x),y) $, leia $Min$ como mínimo, a fim de minimizar esses erros bem como seus riscos tornam-se necessárias táticas de verificação e validação da tese.
-    \newline
+
     \section{Validação}
-    \newline
+
     A validação é uma técnica que visa tornar a tática escolhida em otimal, assim sendo a validação é principalmente um meio de garantir que a abordagem escolhida para o problema esteja tão próxima da realidade quanto for possível, neste caso o conjunto de amostras é tratado para aprimorar a aplicação da tática, o tratamento pode funcionar de maneiras de ferentes de uma tática para outra, por fim a tática de validação mais utilizada e precisa quanto a validar o modelo é a validação cruzada, a qual apesar da eficiência e precisão pode não ser utilizada em detrimento de outras táticas por ser muito custosa em termos computacionais.
-    \newline
+
     A validação cruzada se baseia em redistribuir a amostra de teste em diversas sub-amostras de treino para então escolher-se recursivamente tais conjuntos de amostras e usar o restante como amostra de treino esta abordagem visa estimar o valor do $E_{out}$ que não pode ser calculado sem treino ou verificação do modelo já em uso, então calculam-se os erros para assim se escolher como amostra de teste a amostra, a qual contenha os melhores índices de erro; porém, como visto previamente, forçar os valores de erro na amostra e fora dela para minimiza-los pode acarretar em problemas de overfitting e neste caso os erros calculados durante a validação iriam distuar drasticamente do seu valor real.
-    \newline
+
     Outra técnica de validação amplamente utilizada é a reamostragem, nesse caso o modelo escolhido, mesmo após processos de verificação, não atende as espectativas quando implementado e por isso necessita-se refazer o treinamento, assim sendo se colhem novas amostras para refazer o processo de treino, é importante que não se usem as amostras já colhidas, pois estas iriam moldar o novo modelo com certo juízo de valor, contribuindo fatalmente para o problema de overfitting.
-    \newline
+
     Outra forma de validar um modelo é pela verificação continua durante o treino, neste caso a cada iteração do treinamento calculam-se os erros  do modelo em relação ao esperado para assim melhorar o modelo com alterações pontuais, similar ao processo de entraga de um produto em que a cada versão busca-se melhora-lo e consertar os problemas descobertos, assim como a tática de validação cruzada esse método é muito custoso computacionalmente e por isso pode ser desestimulado em relação aos outros.
     
 \label{fundamentaca}
