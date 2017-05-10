@@ -7,13 +7,11 @@
 \secondAuthor{Lucas Sousa Meireles}
 \thirdAuthor{Claudio Cavalcante Bomfim Júnior}
 
-\title{Identification by Keystroke Dynamics}
-\date{Dezembro 2017}
+\title{Serviço de Análise Comportamental baseado em Dinâmica de Digitação para Arquiteturas de Autenticação Multifator}
+\date{Outubro 2017}
 
 %% Folha de Rosto
-\preamble{Relatório Final do Programa Institucional de Bolsas de
-Iniciação em Desenvolvimento Tecnológico e Inovação do
-CNPq / Instituto Militar de Engenharia.}
+\preamble{Projeto de Final de Curso apresentado ao Curso de Egenharia de Computação do Instituto Militar de Engenharia, como requisito parcial para a obtenção do título de Engenheiro de Computação.}
 \advisor{Prof. Ronaldo Goldschmidt}
 
 %% Resumo
@@ -27,20 +25,27 @@ Our big abstract
 \vehicularKeywords{our keywords}
 
 %% Referências
-%%\references{bibliografia}
+\references{pfc}
 
 \begin{document}
 
 \chapter{Introdução}
 
 \section{Contexto e Motivação}
-Sistemas de Segurança da Informação modernos não se baseiam e um único método de autenticação, mas incrementalmente adicionam mecanismos com múltiplos fatores. Quanto mais e melhores fatores, maior a certeza da identidade ser autenticada corretamente.
+Autenticação é o processo de verificar positivamente a identidade de um usuário, dispositivo ou outra entidade em um sistema computacional, em geral como prerequisito de permissão de acesso a recursos. A autenticação de uma entidade alcança verificação positiva ao corretamente corresponder uma forma de identificação (como uma chave secreta) previamente definida. \cite{OGorman2003}
 
+<<<<<<< Updated upstream
 Dentre as alternativas mais promissoras estão as características biométricas, valorizados por sua natureza individual e difícil falsificação. As características biométricas frequentemente mencionados são os fisiológicos, mas seu emprego traz diversos fatores complicantes como a necessidade de amostragem prévia e diminuição da usabilidade do sistema. Uma alternativa é o uso de características biométricas de comportamento, como padrões comportamentais expressos naturalmente pelo usuário.
+=======
+É conveniente discernir a diferensa entre autenticação de dispositivos (máquinas) e usuários (pessoas), sendo o último sistema onde concentram-se diversas dificuldades em função da usabilidade e interface para o usuário. \cite{OGorman2003} O uso de senhas que humanos possam lembrar é por si só um fator de risco \cite{Morris1979}, havendo portanto a necessidade de introduzir mecanismos secundários de autenticação que não introduzam queda de usabulidade significativa.
+>>>>>>> Stashed changes
 
-As vantagens dos fatores comportamentais incluem a possibilidade de amostragem silenciosa, maior variabilidade do grau de confiança e a transparência do mecanismo para o usuário. Em particular, sistemas providos pela \textit{Web} em geral possuem uma uniformidade de interface que permite a coleta de vários padrões comportamentais durante todo o uso do sistema.
+Dentre as alternativas de autenticação os fatores biométricos se destacam por sua natureza individual e difícil falsificação. Utilizados principalmente em sistemas de autorização e autenticação em ambientes físicos, um sistema biométrico se baseia em um sensor consistente de assinatura biométrica \cite{EdDawson2003}.
 
-Alguns exemplos de comportamentos de interesse coletáveis incluem padrões de digitação, cliques de \textit{mouse} ou áreas do sistema e recursos acessadas pelo usuário. A pesquisa sobre como utilizar fatores dessa natureza pode impulsionar sistemas mais seguros e menos impactantes na experiência do usuário.
+Os fatores biométricos frequentemente mencionados são os fisiológicos, mas seu emprego traz diversos fatores complicantes como a necessidade de amostragem prévia e diminuição da usabilidade do sistema. Uma alternativa é o uso de fatores biométricos de comportamento, como padrões comportamentais expressos naturalmente pelo usuário \cite{Moskovitch2009}.
+
+As vantagens dos fatores comportamentais incluem a possibilidade de amostragem silenciosa, maior variabilidade do grau de confiança e a transparência do mecanismo para o usuário. Em particular, sistemas providos pela \textit{Web} em geral possuem uma uniformidade de interface que permite a coleta de vários padrões comportamentais durante todo o uso do sistema \cite{Moskovitch2009}.	
+
 
 \section{Objetivos}
 Esse trabalho tem como objetivo a construção de um sistema de autenticação contínua baseado na dinâmica de digitação do usuário. Serão investigados os processos necessários para se utilizar os padrões de digitação como fator de autenticação biométrica comportamental. Tais processos incluem a coleta de dados, extração de informação, algoritmos de decisão e arquiteturas de sistema que tornem possível a implantação deste método.
