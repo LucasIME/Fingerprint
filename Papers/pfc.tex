@@ -39,11 +39,11 @@ Dentre as alternativas de autenticação multifator, o uso de características b
 
 As características biométricas frequentemente mencionadas são as fisiológicos, mas seu emprego traz diversos fatores complicantes como a necessidade de amostragem prévia e diminuição da usabilidade do sistema. Uma alternativa é o uso de características biométricas de comportamento, como padrões comportamentais expressos naturalmente pelo usuário \cite{Moskovitch2009}.
 
-As vantagens do uso de características comportamentais incluem a possibilidade de amostragem silenciosa, maior variabilidade do grau de confiança e a transparência do mecanismo para o usuário. Em particular, sistemas providos pela \textit{Web} em geral possuem uma uniformidade de interface que permite a coleta de vários padrões comportamentais durante todo o uso do sistema \cite{Moskovitch2009}.	
+As vantagens do uso de características comportamentais incluem a possibilidade de amostragem silenciosa, maior variabilidade do grau de confiança e a transparência do mecanismo para o usuário, o campo da segurança da informação mantém-se sem muitos meios de autenticação neste sentido. Em particular, sistemas providos pela \textit{Web} em geral possuem uma uniformidade de interface que permite a coleta de vários padrões comportamentais durante todo o uso do sistema \cite{Moskovitch2009}.	
 
 
 \section{Objetivos}
-Esse trabalho tem como objetivo a construção de um sistema de autenticação baseado em dinâmica de digitação do usuário, disponibilizado como serviço externo interagindo através de uma API, além de desenvolver uma biblioteca que facilite sua integração a outros componentes de serviços Web.
+Esse trabalho tem como principal objetivo a construção de um sistema de autenticação baseado em dinâmica de digitação do usuário, disponibilizado como serviço externo interagindo através de uma API, além de desenvolver uma biblioteca que facilite sua integração a outros componentes de serviços Web, e conta como objetivos secundários os eguintes tópicos:
 
 \begin{itemize}
 \item Analisar os tipos de informação que se podem extrair a partir dos padrões de digitação de um indivíduo;
@@ -53,6 +53,7 @@ Esse trabalho tem como objetivo a construção de um sistema de autenticação b
 \end{itemize}
 
 \section{Contribuições Esperadas}
+Espera-se desse projeto a produção de um mecanismo de autenticação com total transparencia ao usuário, como um serviço complementar de autenticação do mesmo, com a finalidade de impedir fraudes de acesso as aplicações do cliente, sem que o usuário esteja ciente da aplicação. Deste modo o agente malicioso não tomará conhecimento deste segundo método de autenticação e não estará apto a se adaptar ao padrão de digitação de quem este pretende invadir, o projeto visa assim suprir a necessidade de autenticação transparente da qual carece o mercado de segurança da informação, por meio de padrões compartamentais, os quais são mais difíceis de se simular.  
 
 \section{Método}
 O desenvolvimento do serviço de autenticação e da biblioteca será feito de forma paralela. Por um lado a biblioteca é responsável por coletar os dados de dinâmica de digitação no navegador de um usuário, enquanto o serviço receberá esses dados e fará a verificação de identidade.
@@ -129,6 +130,8 @@ Apresentação &
 \begin{tabular}{|l|c|}
 \hline
 Definição da arquitetura básica do produto & VE\\
+\hline
+Coletanea de trabalhos relacionados ao tema proposto & VC\\
 \hline
 Prototipagem do serviço de autenticação & VC\\
 \hline
