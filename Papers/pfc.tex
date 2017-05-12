@@ -257,7 +257,11 @@ No capítulo \ref{conclusao} termina-se por sumarizar o conceito, a solução e 
 
 \chapter{Solução Proposta}
 \label{solucao}
+O sistema de autenticação proposto consiste em um serviço que ofereça as operações básicas de manutenção de credenciais (\textit{CRUD}) para usuários de clientes mais uma operação de verificaçao. Essas funcionalidades são acessadas via API REST, a critério do sistema que requer autenticação de seus usuários.
 
+A interface de verificação exigirá a identificação de um usuário e os dados de dinâmica de digitação a serem analisados e responderá a requisição com um indicador de aceitação da identidade. Tal indicador pode ser binário ou assumir valores contínuos, a depender do modelo utilizado. Como utilizar a aceitação do padrão digitação como critério de autenticação fica a critério do cliente, que pode admitir diferentes níveis de tolerância ou diferentes ações de resposta a uma verificação negativa.
+
+Para aulixiar o uso da API, a biblioteca desenvolvida automatizará a coleta de dados de dinâmica de digitação nos campos definitos pelo cliente em seu site, além de disponibilizar métodos de tratamento de dados coletados como truncamento e sub-amostragem. Este componente pode ser deixado em código aberto, já que apenas facilita a interação com a API.
 
 \begin{center}
     \noindent\makebox[\textwidth]{\includegraphics[width=8cm]{SystemDesign.png}}
