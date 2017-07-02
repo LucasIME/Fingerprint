@@ -1,3 +1,5 @@
+var angular = require('angular');
+
 angular.module('app', [
     'app.navbar',
     'app.home',
@@ -20,3 +22,9 @@ angular.module('app', [
       controller : 'AuthCtrl',
    });
 });
+
+//Requires to allow webpack to bundle whole application
+require('./home/home.js');
+require('./navbar/navbar.js');
+require('./register/register.js');
+require('./auth/auth.js');

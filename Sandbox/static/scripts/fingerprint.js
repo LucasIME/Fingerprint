@@ -55,3 +55,8 @@ class Fingerprint{
         return this.buffer.getLast(n);
     }
 }
+
+module.exports = {
+    RingBuffer : RingBuffer,
+    Fingerprint : Fingerprint
+}

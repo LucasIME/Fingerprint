@@ -1,6 +1,5 @@
-/**
- * Created by lucasime on 17/02/17.
- */
+var angular = require('angular');
+
 function navBarController($scope) {
     $scope.headerList = [
         {

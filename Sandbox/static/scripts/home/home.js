@@ -1,3 +1,5 @@
+var angular = require('angular');
+
 angular.module('app.home', ['ngRoute'])
 
 .controller('HomeCtrl', function($scope, $http){

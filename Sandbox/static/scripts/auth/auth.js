@@ -1,3 +1,7 @@
+var angular = require('angular');
+var RingBuffer = require('../fingerprint.js').RingBuffer;
+var Fingerprint = require('../fingerprint.js').Fingerprint;
+
 angular.module('app.auth', ['ngRoute'])
 
 .controller('AuthCtrl', function($scope, $http){
