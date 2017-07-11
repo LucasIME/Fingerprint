@@ -20,6 +20,6 @@ function navBarController($scope) {
 angular.module('app.navbar', [])
 
 .component('navbar', {
-templateUrl: 'static/scripts/navbar/navbar.html',
+templateUrl: 'static/scripts/src/navbar/navbar.html',
 controller: navBarController
 });
