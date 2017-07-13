@@ -2,7 +2,7 @@
   "name": "fingerprint-js",
   "version": "0.1.0",
   "description": "Keystroke dynamics applied to Authentication.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/LucasIME/Fingerprint/issues"
   },
-  "homepage": "https://github.com/LucasIME/Fingerprint#readme"
+  "homepage": "https://github.com/LucasIME/Fingerprint#readme",
+  "dependencies": {
+    "install": "^0.10.1",
+    "npm": "^5.2.0",
+    "typescript": "^2.4.1"
+  }
 }
