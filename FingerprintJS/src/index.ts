@@ -66,7 +66,7 @@ export class Fingerprint{
     }
 
     processKeyUpEvent(evt) : void{
-        this.buffer.push(new Keystroke(evt.key, "DOWN", (new Date()).getTime()));
+        this.buffer.push(new Keystroke(evt.key, "UP", (new Date()).getTime()));
         console.log("UP", evt);
     }
 
