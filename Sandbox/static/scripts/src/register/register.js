@@ -1,6 +1,5 @@
 var angular = require('angular');
-var RingBuffer = require('../fingerprint.js').RingBuffer;
-var Fingerprint = require('../fingerprint.js').Fingerprint;
+var Fingerprint = require('fingerprint-js').Fingerprint;
 
 angular.module('app.register', ['ngRoute'])
 
@@ -17,6 +16,10 @@ angular.module('app.register', ['ngRoute'])
         $http.post(
             '/save/' + $scope.email,
             $scope.keystrokes_analyzer.get()
-        );
+        ).then(function(response){
+            console.log(response.data);
+        }, function(response){
+            console.log(response.data);
+        })
     };
 });

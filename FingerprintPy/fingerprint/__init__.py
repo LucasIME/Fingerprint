@@ -1,4 +1,8 @@
 
+class Keystroke:
+    def __init__(self):
+        pass
+
 def identify(keystroke_stream):
     features = extract_features(keystroke_stream)
     return features
@@ -14,11 +18,11 @@ def get_down_up_average(keystroke_stream):
     total_time = 0
     number_of_down_up_pairs = 0
     for keystroke in keystroke_stream:
-        if keystroke[1] == 'DOWN':
+        if keystroke['direction'] == 'DOWN':
             stack.append(keystroke)
-        elif keystroke[1] == 'UP':
+        elif keystroke['direction'] == 'UP':
             if stack:
                 top_keystroke = stack.pop()
-                total_time += keystroke[2] - top_keystroke[2]
+                total_time += keystroke['timestamp'] - top_keystroke['timestamp']
                 number_of_down_up_pairs += 1
-    return total_time/number_of_down_up_pairs
+    return total_time/number_of_down_up_pairs if number_of_down_up_pairs != 0 else None

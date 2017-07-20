@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "^1.6.4",
     "angular-resource": "^1.6.4",
-    "angular-route": "^1.6.4"
+    "angular-route": "^1.6.4",
+    "fingerprint-js": "^0.1.1"
   }
 }
