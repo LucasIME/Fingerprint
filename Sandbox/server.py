@@ -38,7 +38,7 @@ def savePattern(user_id):
         "message": "Created pattern for user " + user_id
     })
 
-@app.route('/verify/<user_id>', methods=['POST'])
+@app.route('/auth/<user_id>', methods=['POST'])
 def verifyPattern(user_id):
     #TODO: implement
     return jsonify({
