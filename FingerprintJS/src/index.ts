@@ -41,24 +41,36 @@ class RingBuffer<T>{
     }
 }
 
+export class Keystroke {
+    key : string;
+    direction : string;
+    timestamp : number;
+
+    constructor(key: string, direction: string, timestamp: number ){
+        this.key = key;
+        this.direction = direction;
+        this.timestamp = timestamp;
+    }
+}
+
 export class Fingerprint{
-    buffer : RingBuffer<any>;
+    buffer : RingBuffer<Keystroke>;
 
     constructor(bufferSize : number){
         this.buffer = new RingBuffer<any>(bufferSize);
     }
 
     processKeyDownEvent(evt) : void{
-        this.buffer.push([evt.key, "DOWN", (new Date()).getTime()]);
+        this.buffer.push(new Keystroke(evt.key, "DOWN", (new Date()).getTime()));
         console.log("DOWN", evt);
     }
 
     processKeyUpEvent(evt) : void{
-        this.buffer.push([evt.key, "UP", (new Date()).getTime()]);
+        this.buffer.push(new Keystroke(evt.key, "DOWN", (new Date()).getTime()));
         console.log("UP", evt);
     }
 
-    get(length : number) : Array<any> {
+    get(length : number) : Array<Keystroke> {
         let n = length || Math.min(this.buffer.len, this.buffer.totalAdded);
         return this.buffer.getLast(n);
     }
