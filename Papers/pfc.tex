@@ -268,6 +268,40 @@ Para aulixiar o uso da API, a biblioteca desenvolvida automatizará a coleta de 
     \noindent\makebox[\textwidth]{\includegraphics[width=8cm]{SystemDesign.png}}
 \end{center}
 
+\section{Infraestrutura}
+Embora o serviço constista de uma API - podendo ser, portanto, implantado como um único servidor e posteriormente escalado por replicação, deseja-se definir também a infraestrutura de processamento de dados. Para o funcionamento do serviço é necessário que modelos preditivos sejam constantemente retreinados de forma automatizada.
+
+Como a carga de um sistema de processamento offline é extremamente variável, buscamos uma arquitetura de servidores e serviços que seja escalável e flexível com baixo custo. O provedor de computação em nuvem escolhido foi a Amazon Web Services devido a sua grande flexibilidade e baixo custo.
+
+O modelo esquemático do sistema de processamento está representado na figura \ref{fig:cloudformation}.
+
+\begin{figure}
+\label{fig:cloudformation}
+\includegraphics[width=\linewidth]{cloudformation.png}
+\caption{Diagrama de serviços no \textit{Cloud Formation}.}
+\end{figure}
+
+\subsection{Redes}
+
+No modelo de nuvem da Amazon Web Services (AWS), as máquinas virtuais precisam estar dentro de uma Rede Virtual Privada (\textbf{VPC} - Virtual Private Network), que é dividida em Subredes (\textbf{Subnet}) especificadas em diferentes Zonas de Disponibilidade (Availability Zones, representam os diferentes servidores da AWS pelo mundo).
+
+Para dar acesso à Internet para as máquinas, é necessário associar um Gateway de Internet (\textit{Internet} - Internet Gateway) à \textbf{VPC} e uma tabela de rotas de roteamento (\textbf{Routes}) contendo uma rota de abertura (\textbf{Opener} - Route) para a \textbf{Subnet} para redirecionar o tráfego ao endereço local do gateway.
+
+\subsection{Máquinas Virtuais}
+Duas máquinas virtuais persistentes serão utilizadas para o sistema de processamento. Uma delas agindo como servidor \textit{web} para a interface gráfica de controle e monitoramento do sistema (\textbf{Interface}), enquanto a outra conterá o serviço de agendamento de tarefas, agindo como nó mestre do cluster de processamento (\textbf{Scheduler}).
+
+Para facilitar a coordenação da interface, do agendador e dos nós de processamento, todas as máquinas irão compartilhar dados por um volume montado em comum em seus sistemas de arquivos (\textbf{Repository} - Mount Target). Esse volume montado está associado a um Sistema de Arquivos Elástico (\textbf{Files} - Elastic File System).
+
+\subsection{Dados}
+Além do sistema de arquivos, é necessário um banco de dados para persistir as informações relativas ao agendamento de tarefas além dos resultados do processamento (\textbf{Database} - DbInstance). Em particular, escolhemos utilizar o PostgreSQL como SGBD para os dados relacionados à API e para os dados de análise.
+
+Ainda, para poder coordenar os nós de processamento, o \textbf{Scheduler} precisará de um mecanismo de comunicação distribuída. Para isso usa-se um serviço de fila de mensagens (\textbf{Tasks} - Queue). O sistema de escalonamento de nós processadores irá utilizar esta fila como parâmetro de decisão: uma fila muito grande de tarefas deverá indicar a necessidade de instanciar mais uma máquina de processamento.
+
+\subsection{Processamento}
+As máquinas de processamento serão criadas com base nos gatilhos (\textbf{Srhink} e \textbf{Grow} - Alarm), que a cada minuto irão verificar o tamanho da fila \textbf{Tasks}. Ao sair dos limites estipulados, os alarmes irão acionar respectivamente as políticas de escalonamento (\textbf{ScaleOut} e \textbf{ScaleIn} - ScalingPolicy) que alocam e desalocam uma máquina de processamento.
+
+O sistema de escalonamento (\textbf{Scaler} - AutoScalingGroup) irá instanciar as máquinas dentro da \textbf{Subnet} com as especificações de trabalho semelhantes ao nó mestre \textbf{Scheduler}, consumindo porém máquinas virtuais do banco de máquinas leiloadas sob demanda (Spot Instances) com menor custo.
+
 \section{Modelo conceitual}
 \label{modelo}
 
