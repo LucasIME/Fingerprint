@@ -55,7 +55,11 @@ def savePattern(user_id):
 
 @app.route('/auth/<user_id>', methods=['POST'])
 def verifyPattern(user_id):
-    #TODO: implement
+    target_keystrokes = json.loads(request.data.decode())
+    features = identify(target_keystrokes)
+    target_array = [[value for key,value in features.items()]]
+    print(target_array)
+
     user_features = fingerprint_db.features.find_one({'email':user_id})
     non_user_features = list(fingerprint_db.features.find({'email': {'$ne': user_id}}))[:5]
     X = [[ value for key, value in  user_features['features'].items()]] + [ [value for key,value in user['features'].items()] for user in non_user_features]
@@ -64,7 +68,7 @@ def verifyPattern(user_id):
     print(Y)
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X, Y)
-    response = clf.predict([X[0]])
+    response = clf.predict(target_array)
     print(response)
     return jsonify({
         "message": "User verified successfully!",

@@ -18,6 +18,14 @@ angular.module('app.auth', ['ngRoute'])
         $http.post(
             '/auth/' + $scope.email,
             $scope.keystrokes_analyzer.get()
-        );
+        ).then(function(response){
+            console.log(response);
+            if(response.data.response === 1)
+                alert("User verified successfully");
+            else
+                alert("Sorry! Your typing pattern did not match that one that is in our database");
+        }, function(response){
+            alert("There was an error processing your request");
+        });
     };
 });
