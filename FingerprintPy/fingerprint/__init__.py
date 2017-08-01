@@ -11,10 +11,12 @@ def extract_features(keystroke_stream):
     down_up_average = get_down_up_average(keystroke_stream)
     up_down_average = get_up_down_average(keystroke_stream)
     down_down_average = get_down_down_average(keystroke_stream)
+    up_up_average = get_up_up_average(keystroke_stream)
     return {
         "down_up_average" : down_up_average,
         "up_down_average" : up_down_average,
         "down_down_average" : down_down_average,
+        "up_up_average" : up_up_average
     }
 
 def get_down_up_average(keystroke_stream):
@@ -59,3 +61,16 @@ def get_down_down_average(keystroke_stream):
                 last_timestamp = keystroke['timestamp']
     return total_time/number_of_down_down_pairs if number_of_down_down_pairs != 0 else None
 
+def get_up_up_average(keystroke_stream):
+    last_timestamp = None
+    total_time = 0
+    number_of_up_up_pairs = 0
+    for keystroke in keystroke_stream:
+        if keystroke['direction'] == 'UP':
+            if last_timestamp is None:
+                last_timestamp = keystroke['timestamp']
+            else:
+                total_time += keystroke['timestamp'] - last_timestamp
+                number_of_up_up_pairs += 1
+                last_timestamp = keystroke['timestamp']
+    return total_time/number_of_up_up_pairs if number_of_up_up_pairs != 0 else None
