@@ -43,6 +43,7 @@ def savePattern(user_id):
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
     fingerprint_db.features.insert_one({'email':user_id, 'features':features})
+    fingerprint_db.keystrokes.insert_one({'email':user_id, 'keystrokes': keystroke_stream})
 
     return jsonify({
         "message": "Created pattern for user " + user_id,
