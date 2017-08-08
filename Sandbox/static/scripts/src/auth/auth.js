@@ -16,11 +16,11 @@ angular.module('app.auth', ['ngRoute'])
 
     $scope.send_typing_data = function(){
         $http.post(
-            '/auth/' + $scope.email,
+            '/user/' + $scope.email,
             $scope.keystrokes_analyzer.get()
         ).then(function(response){
             console.log(response);
-            if(response.data.response === 1)
+            if(response.data.confidenceLevel === 1)
                 alert("User verified successfully");
             else
                 alert("Sorry! Your typing pattern did not match that one that is in our database");
