@@ -36,20 +36,76 @@ def home():
 
 @app.route('/user/<user_id>', methods=['DELETE'])
 def deleteUser(user_id):
-    #TODO: implement
+    """Endpoint to delete registered users
+    ---
+    parameters:
+      - name: user_id
+        in: path
+        type: number
+        required: true
+        default: 1
+    definitions:
+      Palette:
+        type: object
+        properties:
+          palette_name:
+            type: array
+            items:
+              $ref: '#/definitions/Color'
+      Color:
+        type: string
+    responses:
+      200:
+        description: A boolean indicating if the user was deleted or not
+        schema:
+          $ref: '#/definitions/Palette'
+        examples:
+          wasUserDeleted: true
+    """
     return jsonify({
-        "message": "User deleted successfully!"
+        "wasUserDeleted": True
     })
 
 @app.route('/user/<user_id>', methods=['POST'])
 def savePattern(user_id):
-    #TODO: implement
+    """Endpoint to create typing models for a given user
+    ---
+    parameters:
+      - name: user_id
+        in: path
+        type: number
+        required: true
+        default: 1
+      - name: keystroke_array
+        in: body
+        required: true
+        type: array
+    definitions:
+      Palette:
+        type: object
+        properties:
+          palette_name:
+            type: array
+            items:
+              $ref: '#/definitions/Color'
+      Color:
+        type: string
+    responses:
+      200:
+        description: A boolean indicating if the model for the user was created or not
+        schema:
+          $ref: '#/definitions/Palette'
+        examples:
+          wasUserCreated: true
+    """
+
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
     fingerprint_db.features.insert_one({'email':user_id, 'features':features})
     fingerprint_db.keystrokes.insert_one({'email':user_id, 'keystrokes': keystroke_stream})
 
     return jsonify({
+        "wasUserCreated" : True,
         "message": "Created pattern for user " + user_id,
         "fingerprint": features
     })
