@@ -16,7 +16,7 @@ angular.module('app.auth', ['ngRoute'])
 
     $scope.send_typing_data = function(){
         $http.post(
-            '/user/' + $scope.email,
+            '/auth/' + $scope.email,
             $scope.keystrokes_analyzer.get()
         ).then(function(response){
             console.log(response);

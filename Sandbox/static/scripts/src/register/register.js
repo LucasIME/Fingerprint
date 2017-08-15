@@ -14,7 +14,7 @@ angular.module('app.register', ['ngRoute'])
 
     $scope.send_typing_data = function(){
         $http.post(
-            '/save/' + $scope.email,
+            '/user/' + $scope.email,
             $scope.keystrokes_analyzer.get()
         ).then(function(response){
             console.log(response.data);
