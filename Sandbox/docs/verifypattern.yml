@@ -1,0 +1,31 @@
+Endpoint to authenticate users
+This is using docstrings for specifications.
+---
+parameters:
+  - name: user_id
+    in: path
+    type: number
+    required: true
+    default: 1
+  - name: keystroke_array
+    in: body
+    required: true
+    type: array
+definitions:
+  Palette:
+    type: object
+    properties:
+      palette_name:
+        type: array
+        items:
+          $ref: '#/definitions/Color'
+  Color:
+    type: string
+responses:
+  200:
+    description: A percentage indicating the condifence level
+    schema:
+      $ref: '#/definitions/Palette'
+    examples:
+      confidenceLevel: 0.87
+

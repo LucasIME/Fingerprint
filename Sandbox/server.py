@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from flasgger import Swagger
+from flasgger import Swagger, swag_from
 from fingerprint import identify
 import json
 import os
@@ -16,89 +16,21 @@ db_connection_url = os.environ['DATABASE_URI']
 db_client = pymongo.MongoClient(db_connection_url)
 fingerprint_db = db_client.fingerprint
 
-@app.route('/colors/<palette>/')
-def colors(palette):
-    
-    all_colors = {
-        'cmyk': ['cian', 'magenta', 'yellow', 'black'],
-        'rgb': ['red', 'green', 'blue']
-    }
-    if palette == 'all':
-        result = all_colors
-    else:
-        result = {palette: all_colors.get(palette)}
-
-    return jsonify(result)
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
 @app.route('/user/<user_id>', methods=['DELETE'])
+@swag_from('/docs/deleteuser.yml')
 def deleteUser(user_id):
-    """Endpoint to delete registered users
-    ---
-    parameters:
-      - name: user_id
-        in: path
-        type: number
-        required: true
-        default: 1
-    definitions:
-      Palette:
-        type: object
-        properties:
-          palette_name:
-            type: array
-            items:
-              $ref: '#/definitions/Color'
-      Color:
-        type: string
-    responses:
-      200:
-        description: A boolean indicating if the user was deleted or not
-        schema:
-          $ref: '#/definitions/Palette'
-        examples:
-          wasUserDeleted: true
-    """
     return jsonify({
         "wasUserDeleted": True
     })
 
 @app.route('/user/<user_id>', methods=['POST'])
+@swag_from('/docs/savepattern.yml')
 def savePattern(user_id):
-    """Endpoint to create typing models for a given user
-    ---
-    parameters:
-      - name: user_id
-        in: path
-        type: number
-        required: true
-        default: 1
-      - name: keystroke_array
-        in: body
-        required: true
-        type: array
-    definitions:
-      Palette:
-        type: object
-        properties:
-          palette_name:
-            type: array
-            items:
-              $ref: '#/definitions/Color'
-      Color:
-        type: string
-    responses:
-      200:
-        description: A boolean indicating if the model for the user was created or not
-        schema:
-          $ref: '#/definitions/Palette'
-        examples:
-          wasUserCreated: true
-    """
-
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
     fingerprint_db.features.insert_one({'email':user_id, 'features':features})
@@ -111,38 +43,8 @@ def savePattern(user_id):
     })
 
 @app.route('/auth/<user_id>', methods=['POST'])
+@swag_from('/docs/verifypattern.yml')
 def verifyPattern(user_id):
-    """Endpoint to authenticate users
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: user_id
-        in: path
-        type: number
-        required: true
-        default: 1
-      - name: keystroke_array
-        in: body
-        required: true
-        type: array
-    definitions:
-      Palette:
-        type: object
-        properties:
-          palette_name:
-            type: array
-            items:
-              $ref: '#/definitions/Color'
-      Color:
-        type: string
-    responses:
-      200:
-        description: A percentage indicating the condifence level
-        schema:
-          $ref: '#/definitions/Palette'
-        examples:
-          confidenceLevel: 0.87
-    """
     target_keystrokes = json.loads(request.data.decode())
     features = identify(target_keystrokes)
     target_array = [[value for key,value in features.items()]]
