@@ -10,21 +10,9 @@ parameters:
     in: body
     required: true
     type: array
-definitions:
-  Palette:
-    type: object
-    properties:
-      palette_name:
-        type: array
-        items:
-          $ref: '#/definitions/Color'
-  Color:
-    type: string
 responses:
   200:
     description: A boolean indicating if the model for the user was created or not
-    schema:
-      $ref: '#/definitions/Palette'
     examples:
       wasUserCreated: true
 

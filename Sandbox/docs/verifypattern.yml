@@ -11,21 +11,9 @@ parameters:
     in: body
     required: true
     type: array
-definitions:
-  Palette:
-    type: object
-    properties:
-      palette_name:
-        type: array
-        items:
-          $ref: '#/definitions/Color'
-  Color:
-    type: string
 responses:
   200:
     description: A percentage indicating the condifence level
-    schema:
-      $ref: '#/definitions/Palette'
     examples:
       confidenceLevel: 0.87
 
