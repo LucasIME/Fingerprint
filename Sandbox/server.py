@@ -23,14 +23,14 @@ def home():
 
 @app.route('/user/<user_id>', methods=['DELETE'])
 @swag_from('/docs/deleteuser.yml')
-def deleteUser(user_id):
+def delete_user(user_id):
     return jsonify({
         "wasUserDeleted": True
     })
 
 @app.route('/user/<user_id>', methods=['POST'])
 @swag_from('/docs/savepattern.yml')
-def savePattern(user_id):
+def save_pattern(user_id):
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
     fingerprint_db.features.insert_one({'email':user_id, 'features':features})
@@ -44,7 +44,7 @@ def savePattern(user_id):
 
 @app.route('/auth/<user_id>', methods=['POST'])
 @swag_from('/docs/verifypattern.yml')
-def verifyPattern(user_id):
+def verify_pattern(user_id):
     target_keystrokes = json.loads(request.data.decode())
     features = identify(target_keystrokes)
     target_array = [[value for key,value in features.items()]]
