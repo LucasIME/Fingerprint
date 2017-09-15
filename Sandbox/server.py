@@ -64,5 +64,12 @@ def verify_pattern(user_id):
         "confidenceLevel": int(response[0])
     })
 
+def recalculate_features():
+    for keystroke_obj in fingerprint_db.keystrokes.find():
+        keystroke = keystroke_obj['keystrokes']
+        cur_user_email = keystroke_obj['email']
+        new_features = identify(keystroke)
+        fingerprint_db.features.update({'email': cur_user_email}, {'email': cur_user_email, 'features': new_features})
+
 if __name__ == '__main__':
     app.run(debug=True)
