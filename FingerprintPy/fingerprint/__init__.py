@@ -20,7 +20,25 @@ def extract_features(keystroke_stream):
         value = get_hold_avg_for_key(keystroke_stream, c)
         resp[key] = value
     
+    pairs_to_analyze = [('v', 'e'), ('d', 'o'), ('l', ' '), ('l', 'p'), ('s', 'o'), ('w', 'n'), ('c', 'a'), ('j', 'u'), ('r', 'n'), ('p', 'h'), (' ', 'T'), ('x', ' '), ('n', ' '), ('t', 'h'), ('e', 't'), ('q', 'u'), ('u', 'i'), ('o', ' '), ('p', 's'), ('P', 'P'), (' ', 'q'), ('a', 'n'), ('r', ' '), ('i', 'n'), ('e', 'r'), ('R', 'C'), ('h', 'a'), ('u', 'r'), ('l', 'l'), ('r', 's'), ('g', ' '), ('I', 't'), ('s', 'e'), ('w', 'e'), ('e', ':'), ('a', 'z'), (' ', 'j'), ('T', 'h'), ('p', 'a'), ('l', 's'), ('r', 'a'), ('a', 'c'), ('o', 'v'), ('n', 'd'), ('t', 'y'), ('f', 'o'), ('b', 'r'), ('t', 'e'), ('c', 't'), ('t', 'r'), ('t', ' '), ('l', 'a'), ('E', 'R'), ('k', ' '), ('t', 't'), ('p', 'i'), ('y', 'o'), ('a', 'g'), ('u', 'm'), (' ', 'o'), (' ', 'U'), ('A', 'S'), (' ', 'h'), ('h', '.'), ('a', 'b'), ('h', 'e'), ('l', 'o'), ('c', 'h'), ('n', 't'), (' ', 'p'), ('i', 'k'), ('e', 'n'), ('a', 'i'), ('r', 'o'), ('e', ' '), ('d', ' '), ('a', 's'), ('n', 'c'), ('i', 's'), ('t', 'o'), ('o', 'w'), (' ', 't'), ('r', 'c'), ('c', 'k'), ('a', 'l'), ('g', 'r'), (' ', 'd'), ('a', 'r'), ('o', 'u'), ('m', 'p'), ('n', 'g'), ('c', 'e'), (' ', 'b'), ('.', ' '), ('y', 'p'), ('l', 'i'), (' ', 'i'), ('h', 'i'), (' ', 'a'), ('a', 't'), ('C', 'A'), ('e', 'a'), ('l', 'e'), ('n', 'i'), ('P', 'E'), (' ', 'f'), ('a', 'p'), ('i', 'c'), ('n', '.'), ('k', 'e'), ('o', 'g'), ('y', ' '), ('E', ' '), (' ', 's'), (':', ' '), (' ', 'I'), ('z', 'y'), ('b', 'e'), ('s', ' '), (' ', 'y'), (' ', 'l'), ('U', 'P'), ('o', 'x'), ('S', 'E'), (' ', 'c')] 
+    for c, c2 in pairs_to_analyze:
+        key = 'DD_{0}_{1}'.format(convert_to_mongo_acceptable_string(c), convert_to_mongo_acceptable_string(c2))
+        value = get_down_down_avg_for_digraph(keystroke_stream, c, c2)
+        resp[key] = value
+
     return resp
+
+def convert_to_mongo_acceptable_string(char):
+    if char.isalnum():
+        return char
+    if char == '.':
+        return 'period'
+    if char == ' ':
+        return 'space'
+    if char == ':':
+        return 'colon'
+    if char == ';':
+        return 'semicolon'
 
 def get_down_up_average(keystroke_stream):
     stack = []
@@ -102,6 +120,8 @@ def get_down_down_avg_for_digraph(keystroke_stream, key1, key2):
         cur_keystroke = keystroke_stream[i]
         if cur_keystroke['key'] == key1 and cur_keystroke['direction'] == 'DOWN':
             next_down_i = get_next_down(keystroke_stream, i)
+            if next_down_i == -1:
+                break
             if keystroke_stream[next_down_i]['key'] == key2:
                 total_time += keystroke_stream[next_down_i]['timestamp'] - cur_keystroke['timestamp']
                 number_of_matches += 1
@@ -109,3 +129,10 @@ def get_down_down_avg_for_digraph(keystroke_stream, key1, key2):
         else:
             i+=1
     return total_time/number_of_matches if number_of_matches != 0 else None
+
+def get_next_down(keystroke_stream, i):
+    for i2 in range(i+1, len(keystroke_stream)):
+        cur_keystroke = keystroke_stream[i2]
+        if cur_keystroke['direction'] == 'DOWN':
+            return i2
+    return -1
