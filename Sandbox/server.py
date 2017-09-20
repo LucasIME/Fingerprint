@@ -40,7 +40,7 @@ def save_pattern(user_id):
     recalculate_features()
     user_model = create_model_for_id(user_id)
     save_model(user_model, user_id)
-    
+
     return jsonify({
         "wasUserCreated" : True,
         "message": "Created pattern for user " + user_id,
@@ -54,11 +54,13 @@ def verify_pattern(user_id):
     features = identify(target_keystrokes)
     target_array = pd.DataFrame.from_dict(features, orient='index').transpose()
 
-    clf = create_model_for_id(user_id)
+    all_users = get_all_users_features_dataframe()
 
-    target_array =  target_array.fillna(result.mean())
+    clf = load_model_from_user(user_id)
+
+    target_array =  target_array.fillna(all_users.mean())
     response = clf.predict(target_array)
-    print(response)
+    print('Response for user {0}: {1}'.format(user_id, response))
     return jsonify({
         "confidenceLevel": int(response[0])
     })
@@ -75,7 +77,7 @@ def create_model_for_id(user_id):
     user_features = pd.DataFrame.from_dict(raw_user_features['features'], orient='index').transpose()
 
     raw_non_user_features = fingerprint_db.features.find({'email': {'$ne': user_id}})
-    non_user_features = pd.DataFrame([ x['features'] for x in raw_non_user_features])
+    non_user_features = pd.DataFrame([user['features'] for user in raw_non_user_features])
 
     result = pd.concat([user_features, non_user_features]).reset_index(drop=True)
     X = result.fillna(result.mean())
@@ -85,6 +87,11 @@ def create_model_for_id(user_id):
     clf = clf.fit(X, Y)
 
     return clf
+
+def get_all_users_features_dataframe():
+    raw_all_users_features = fingerprint_db.features.find({})
+    df = pd.DataFrame([user['features'] for user in raw_all_users_features])
+    return df
 
 def save_model(model_obj, user_id):
     binary_model = pickle.dumps(model_obj)
