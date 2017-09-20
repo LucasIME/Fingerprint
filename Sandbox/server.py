@@ -34,8 +34,8 @@ def delete_user(user_id):
 def save_pattern(user_id):
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
-    fingerprint_db.features.update_one({'email':user_id}, {'email':user_id, 'features':features}, upsert=True)
-    fingerprint_db.keystrokes.update_one({'email':user_id}, {'email':user_id, 'keystrokes': keystroke_stream}, upsert=True)
+    fingerprint_db.features.update_one({'email':user_id}, {'$setOnInsert':{'email':user_id}, '$set':{'features':features}}, upsert=True)
+    fingerprint_db.keystrokes.update_one({'email':user_id}, {'$setOnInsert':{'email':user_id}, '$set':{'keystrokes': keystroke_stream}}, upsert=True)
 
     recalculate_features()
     user_model = create_model_for_id(user_id)
@@ -71,7 +71,8 @@ def recalculate_features():
         keystroke = keystroke_obj['keystrokes']
         cur_user_email = keystroke_obj['email']
         new_features = identify(keystroke)
-        fingerprint_db.features.update({'email': cur_user_email}, {'email': cur_user_email, 'features': new_features})
+        fingerprint_db.features.update({'email': cur_user_email}, {'$setOnInsert':{'email': cur_user_email}, '$set':{'features': new_features}})
+    print("Recalculated features for all users!")
 
 def create_model_for_id(user_id):
     raw_user_features = fingerprint_db.features.find_one({'email':user_id})
@@ -96,7 +97,7 @@ def get_all_users_features_dataframe():
 
 def save_model(model_obj, user_id):
     binary_model = pickle.dumps(model_obj)
-    fingerprint_db.models.update_one({'email': user_id}, {'email': user_id, 'model': binary_model}, upsert=True)
+    fingerprint_db.models.update_one({'email': user_id}, {'$setOnInsert':{'email': user_id}, '$set':{'model': binary_model}}, upsert=True)
 
 def load_model_from_user(user_id):
     binary_model = fingerprint_db.models.find_one({'email': user_id})
@@ -107,6 +108,9 @@ def create_all_models():
     for document in fingerprint_db.features.find({}):
         model = create_model_for_id(document['email'])
         save_model(model, document['email'])
+    print("Created new models for all users!")
 
 if __name__ == '__main__':
+    recalculate_features()
+    create_all_models()
     app.run(debug=True)
