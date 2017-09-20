@@ -36,6 +36,7 @@ def save_pattern(user_id):
     fingerprint_db.features.insert_one({'email':user_id, 'features':features})
     fingerprint_db.keystrokes.insert_one({'email':user_id, 'keystrokes': keystroke_stream})
 
+    recalculate_features()
     return jsonify({
         "wasUserCreated" : True,
         "message": "Created pattern for user " + user_id,
