@@ -47,17 +47,21 @@ def save_pattern(user_id):
 def verify_pattern(user_id):
     target_keystrokes = json.loads(request.data.decode())
     features = identify(target_keystrokes)
-    target_array = [[value for key,value in features.items()]]
-    print(target_array)
+    target_array = pd.DataFrame.from_dict(features, orient='index').transpose()
 
-    user_features = fingerprint_db.features.find_one({'email':user_id})
-    non_user_features = list(fingerprint_db.features.find({'email': {'$ne': user_id}}))[:5]
-    X = [[ value for key, value in  user_features['features'].items()]] + [ [value for key,value in user['features'].items()] for user in non_user_features]
-    Y = [1] + [0 for item in non_user_features]
-    print(X)
-    print(Y)
+    raw_user_features = fingerprint_db.features.find_one({'email':user_id})
+    user_features = pd.DataFrame.from_dict(raw_user_features['features'], orient='index').transpose()
+
+    raw_non_user_features = fingerprint_db.features.find({'email': {'$ne': user_id}})
+    non_user_features = pd.DataFrame([ x['features'] for x in raw_non_user_features])
+
+    result = pd.concat([user_features, non_user_features]).reset_index(drop=True)
+    X = result.fillna(result.mean())
+    Y = [1] + [0 for i in range(len(non_user_features.index))]
+    
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X, Y)
+    target_array =  target_array.fillna(result.mean())
     response = clf.predict(target_array)
     print(response)
     return jsonify({
