@@ -34,8 +34,8 @@ def delete_user(user_id):
 def save_pattern(user_id):
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
-    fingerprint_db.features.insert_one({'email':user_id, 'features':features})
-    fingerprint_db.keystrokes.insert_one({'email':user_id, 'keystrokes': keystroke_stream})
+    fingerprint_db.features.update_one({'email':user_id}, {'email':user_id, 'features':features}, upsert=True)
+    fingerprint_db.keystrokes.update_one({'email':user_id}, {'email':user_id, 'keystrokes': keystroke_stream}, upsert=True)
 
     recalculate_features()
     user_model = create_model_for_id(user_id)
@@ -59,6 +59,7 @@ def verify_pattern(user_id):
     clf = load_model_from_user(user_id)
 
     target_array =  target_array.fillna(all_users.mean())
+    print(target_array)
     response = clf.predict(target_array)
     print('Response for user {0}: {1}'.format(user_id, response))
     return jsonify({
@@ -95,7 +96,7 @@ def get_all_users_features_dataframe():
 
 def save_model(model_obj, user_id):
     binary_model = pickle.dumps(model_obj)
-    fingerprint_db.models.insert_one({'email': user_id, 'model': binary_model})
+    fingerprint_db.models.update_one({'email': user_id}, {'email': user_id, 'model': binary_model}, upsert=True)
 
 def load_model_from_user(user_id):
     binary_model = fingerprint_db.models.find_one({'email': user_id})
