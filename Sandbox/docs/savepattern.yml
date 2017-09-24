@@ -3,7 +3,7 @@ Endpoint to create typing models for a given user
 parameters:
   - name: user_id
     in: path
-    type: number
+    type: string
     required: true
     default: 1
   - name: keystroke_array
