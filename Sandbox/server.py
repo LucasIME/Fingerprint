@@ -6,8 +6,9 @@ import os
 import pymongo
 import pandas as pd
 import numpy as np
-from sklearn import tree
+from sklearn import tree, metrics
 import pickle
+from pprint import pprint
 
 
 app = Flask(__name__)
@@ -34,8 +35,8 @@ def delete_user(user_id):
 def save_pattern(user_id):
     keystroke_stream = json.loads(request.data.decode())
     features = identify(keystroke_stream)
-    fingerprint_db.features.update_one({'email':user_id}, {'$setOnInsert':{'email':user_id}, '$set':{'features':features}}, upsert=True)
-    fingerprint_db.keystrokes.update_one({'email':user_id}, {'$setOnInsert':{'email':user_id}, '$set':{'keystrokes': keystroke_stream}}, upsert=True)
+    fingerprint_db.features.insert_one({'email':user_id, 'features':features})
+    fingerprint_db.keystrokes.insert_one({'email':user_id, 'keystrokes':keystroke_stream})
 
     recalculate_features()
     user_model = create_model_for_id(user_id)
@@ -52,6 +53,7 @@ def save_pattern(user_id):
 def verify_pattern(user_id):
     target_keystrokes = json.loads(request.data.decode())
     features = identify(target_keystrokes)
+    pprint(features)
     target_array = pd.DataFrame.from_dict(features, orient='index').transpose()
 
     all_users = get_all_users_features_dataframe()
@@ -67,26 +69,31 @@ def verify_pattern(user_id):
     })
 
 def recalculate_features():
+    fingerprint_db.features.remove({})
+
     for keystroke_obj in fingerprint_db.keystrokes.find():
         keystroke = keystroke_obj['keystrokes']
         cur_user_email = keystroke_obj['email']
         new_features = identify(keystroke)
-        fingerprint_db.features.update({'email': cur_user_email}, {'$setOnInsert':{'email': cur_user_email}, '$set':{'features': new_features}})
+        fingerprint_db.features.insert_one({'email': cur_user_email, 'features': new_features})
     print("Recalculated features for all users!")
 
 def create_model_for_id(user_id):
-    raw_user_features = fingerprint_db.features.find_one({'email':user_id})
-    user_features = pd.DataFrame.from_dict(raw_user_features['features'], orient='index').transpose()
+    raw_user_features = fingerprint_db.features.find({'email':user_id})
+    user_features = pd.DataFrame([user['features'] for user in raw_user_features])
 
     raw_non_user_features = fingerprint_db.features.find({'email': {'$ne': user_id}})
     non_user_features = pd.DataFrame([user['features'] for user in raw_non_user_features])
 
     result = pd.concat([user_features, non_user_features]).reset_index(drop=True)
     X = result.fillna(result.mean())
-    Y = [1] + [0 for i in range(len(non_user_features.index))]
+    Y = [1 for i in range(len(user_features))] + [0 for i in range(len(non_user_features.index))]
     
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X, Y)
+
+    print(metrics.confusion_matrix(clf.predict(X), Y))
+    print(clf.feature_importances_)
 
     return clf
 
