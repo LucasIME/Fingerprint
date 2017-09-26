@@ -12,12 +12,12 @@
   "license": "ISC",
   "devDependencies": {
     "source-map-loader": "^0.2.1",
-    "webpack": "^3.0.0"
+    "webpack": "^3.6.0"
   },
   "dependencies": {
-    "angular": "^1.6.4",
-    "angular-resource": "^1.6.4",
-    "angular-route": "^1.6.4",
-    "fingerprint-js": "^0.1.1"
+    "angular": "^1.6.6",
+    "angular-resource": "^1.6.6",
+    "angular-route": "^1.6.6",
+    "fingerprint-js": "^0.1.2"
   }
 }
