@@ -32,7 +32,7 @@ class RingBuffer<T>{
             if(last+1 >= n)
                 return this.buffer.slice(last - n + 1, last+1);
             else
-                return this.buffer.slice(first, first + n + 1 - (last+1)).concat(this.buffer.slice(0, last+1));
+                return this.buffer.slice(this.len - n + last + 1, this.len).concat(this.buffer.slice(0, last+1));
         }
         else{
             last = Math.min(this.len - 1, this.totalAdded-1);
