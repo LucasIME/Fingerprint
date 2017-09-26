@@ -18,6 +18,6 @@
     "angular": "^1.6.6",
     "angular-resource": "^1.6.6",
     "angular-route": "^1.6.6",
-    "fingerprint-js": "^0.1.2"
+    "fingerprint-js": "^0.1.3"
   }
 }
