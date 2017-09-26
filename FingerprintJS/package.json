@@ -1,6 +1,6 @@
 {
   "name": "fingerprint-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Keystroke dynamics applied to Authentication.",
   "main": "dist/index.js",
   "scripts": {
