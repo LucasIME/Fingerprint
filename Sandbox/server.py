@@ -75,8 +75,8 @@ def verify_pattern(user_id):
 
     all_users = get_all_users_features_dataframe()
 
-    #clf = load_model_from_user(user_id)
-    clf = load_unique_model()
+    clf = load_model_from_user(user_id)
+    #clf = load_unique_model()
 
     target_array =  target_array.fillna(all_users.mean())
     target_array = target_array[sorted(target_array.columns)]
@@ -84,7 +84,8 @@ def verify_pattern(user_id):
     response = clf.predict(target_array)
     print('Response for user {0}: {1}'.format(user_id, response))
     return jsonify({
-        "confidenceLevel": int(response == to_class(user_id))
+        "confidenceLevel": int(response)
+        #"confidenceLevel": int(response == to_class(user_id))
     })
 
 def recalculate_features():
