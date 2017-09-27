@@ -79,6 +79,7 @@ def verify_pattern(user_id):
     clf = load_unique_model()
 
     target_array =  target_array.fillna(all_users.mean())
+    target_array = target_array[sorted(target_array.columns)]
 
     response = clf.predict(target_array)
     print('Response for user {0}: {1}'.format(user_id, response))
@@ -104,6 +105,8 @@ def create_model_for_id(user_id):
     non_user_features = pd.DataFrame([user['features'] for user in raw_non_user_features])
 
     result = pd.concat([user_features, non_user_features]).reset_index(drop=True)
+    result = result[sorted(result.columns)]
+
     X = result.fillna(result.mean())
     Y = [1 for i in range(len(user_features))] + [0 for i in range(len(non_user_features.index))]
 
@@ -119,7 +122,8 @@ def create_model_for_id(user_id):
 def create_unique_model():
     raw_user_features = list(fingerprint_db.features.find({}))
     user_features = pd.DataFrame([user['features'] for user in raw_user_features]).reset_index(drop=True)
-
+    user_features = user_features[sorted(user_features.columns)]
+    
     X = user_features.fillna(user_features.mean())
     Y = [to_class(user['email']) for user in raw_user_features]
 
