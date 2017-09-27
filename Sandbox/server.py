@@ -83,7 +83,7 @@ def verify_pattern(user_id):
     response = clf.predict(target_array)
     print('Response for user {0}: {1}'.format(user_id, response))
     return jsonify({
-        "confidenceLevel": int(response[0])
+        "confidenceLevel": int(response == to_class(user_id))
     })
 
 def recalculate_features():
